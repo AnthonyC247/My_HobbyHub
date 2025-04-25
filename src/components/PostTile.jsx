@@ -19,7 +19,7 @@ const PostTile = ({
     useEffect(() => {
         const getAuthor = async (id) => {
             let { data, error } = await supabase
-                .from('Posts')
+                .from('posts')
                 .select('user_id')
                 .eq('id', id);
             if (error) {
@@ -28,7 +28,7 @@ const PostTile = ({
             }
 
             ({data, error} = await supabase
-                .from('Users')
+                .from('users')
                 .select('username')
                 .eq('id', data[0].user_id));
             if (error) {

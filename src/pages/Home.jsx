@@ -18,7 +18,7 @@ const Home = ({navigate, supabase}) => {
     useEffect(() => {
         const fetchPosts = async () => {
             const { data, error } = await supabase
-                .from('Posts')
+                .from('posts')
                 .select('*');
             if (error) {
                 console.error(error);

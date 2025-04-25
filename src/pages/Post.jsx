@@ -31,7 +31,7 @@ const Post = ({supabase, navigate}) => {
 
     const updateVotesDB = async () => {
         const { data, error } = await supabase
-            .from('Posts')
+            .from('posts')
             .update({
                 upvotes: post['upvotes'],
                 downvotes: post['downvotes'],
@@ -50,7 +50,7 @@ const Post = ({supabase, navigate}) => {
             return;
         } else {
             const { data, error } = await supabase
-                .from('Posts')
+                .from('posts')
                 .delete()
                 .eq('id', state.post_id);
             if (error) {
@@ -93,7 +93,7 @@ const Post = ({supabase, navigate}) => {
     useEffect(() => {
         const fetchAuthor = async (authorID) => {
             const { data, error } = await supabase
-                .from('Users')
+                .from('users')
                 .select('username')
                 .eq('id', authorID);
             if (error) {
@@ -108,7 +108,7 @@ const Post = ({supabase, navigate}) => {
 
         const fetchPost = async () => {
             const { data, error } = await supabase
-                .from('Posts')
+                .from('posts')
                 .select('*')
                 .eq('id', state.post_id);
             if (error) {

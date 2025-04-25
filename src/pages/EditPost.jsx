@@ -37,7 +37,7 @@ const CreatePost = ({navigate, supabase}) => {
 
     const editPost = async () => {
         const { data, error } = await supabase
-            .from('Posts')
+            .from('posts')
             .update({
                 title: post.title,
                 content: post.content,

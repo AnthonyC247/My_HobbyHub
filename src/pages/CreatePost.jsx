@@ -34,7 +34,7 @@ const CreatePost = ({navigate, supabase}) => {
 
     const addPost = async () => {
         const { data, error } = await supabase
-            .from('Posts')
+            .from('posts')
             .insert([
                 {
                     user_id: userId,
