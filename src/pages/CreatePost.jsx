@@ -117,6 +117,7 @@ const CreatePost = ({ navigate, supabase }) => {
 };
 
 //posting works :)
+//just in case
 
 export default CreatePost;
 
