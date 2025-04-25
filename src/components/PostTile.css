@@ -22,6 +22,14 @@
     margin: 2vh 2vw !important;
 }
 
+.tile-content {
+    margin: 8px 0;
+    color: #444;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+
 .var-txt {
     margin-left: 0.5vw;
     font-weight: bold;

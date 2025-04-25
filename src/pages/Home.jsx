@@ -6,6 +6,7 @@ import Filters from "../components/Filters";
 import SearchIcon from '@mui/icons-material/Search';
 
 import "./Home.css";
+
 const Home = ({navigate, supabase}) => {
     const userId = useLocation().state?.user_id;
     
@@ -31,7 +32,7 @@ const Home = ({navigate, supabase}) => {
                 allPosts: [...sortedData],
                 displayedPosts: [...sortedData],
             }));
-        }
+        };
         fetchPosts();
     }, []);
 
@@ -46,34 +47,30 @@ const Home = ({navigate, supabase}) => {
         setPosts((prevState) => ({
             ...prevState,
             displayedPosts: [...sorted],
-        
-        }))
-    }
-    
+        }));
+    };
+
     const sortByTime = (data) => {
         let sorted = [...data];
         sorted.sort((a, b) => {
             return new Date(b.created_at) - new Date(a.created_at);
         });
         return sorted;
-    }
+    };
 
     const sortByUpvotes = (data) => {
         let sorted = [...data];
         sorted.sort((a, b) => {
             return b.upvotes - a.upvotes;
         });
+        return sorted;
+    };
 
-        return sorted
-    }
-
-    // Update the posts shown when the search bar is used
     useEffect(() => {
         const filteredPosts = posts.allPosts.filter((post) => {
             return post.title.toLowerCase().includes(search);
         });
 
-        // update the posts displayed
         if (filteredPosts.length === 0 || search === "") {
             setPosts((prevState) => ({
                 ...prevState,
@@ -85,7 +82,6 @@ const Home = ({navigate, supabase}) => {
                 displayedPosts: [...filteredPosts],
             }));
         }
-
     }, [search]);
 
     return (
@@ -93,34 +89,33 @@ const Home = ({navigate, supabase}) => {
             <Navbar_Login 
                 navigate={navigate} 
                 supabase={supabase}
-                userId= {userId}/>
-            <div className="home-pg ">
+                userId={userId} 
+            />
+            <div className="home-pg">
                 <Filters 
                     handlePopularity={() => handleSort('upvotes')}
                     handleTime={() => handleSort('time')}
                     handleSearch={(e) => setSearch(e.target.value.trim().toLowerCase())}
-                    search={search}/>
+                    search={search} 
+                />
                 <div className="posts-container">
                     {posts.displayedPosts.map((post) => (
-                        <>
-                            <PostTile 
-                                postId={post.id}
-                                title={post.title}
-                                image={post.image}
-                                content={post.content}
-                                user_id={userId}
-                                upvotes={post.upvotes}
-                                downvotes={post.downvotes}
-                                timeCreated={post.created_at}
-                                supabase={supabase}
-                                navigate={navigate}
-                                userId={userId}
-                            />
-                        </>
+                        <PostTile 
+                            key={post.id}
+                            postId={post.id}
+                            title={post.title}
+                            content={post.content}           
+                            image={post.image}
+                            user_id={userId}
+                            upvotes={post.upvotes}
+                            downvotes={post.downvotes}
+                            timeCreated={post.created_at}
+                            supabase={supabase}
+                            navigate={navigate}
+                        />
                     ))}
                 </div>
             </div>
-
         </div>
     );
 };
