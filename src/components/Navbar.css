@@ -1,0 +1,51 @@
+@import url("../colors.css");
+
+nav {
+    margin: 0 !important;
+}
+
+.navbar {
+    background-color: rgba(181, 138, 255, 0.6);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    button {
+        padding: 0;
+        font-weight: 500;
+    }
+}
+
+.navicon {
+    width: 3vw;
+    height: 3vw;
+    margin: 1vw;
+}
+
+.nav-title{
+    margin: 0;
+    font-size: 3.5vh;
+}
+
+.nav-icon-container {
+    display: flex;
+    align-items: center;
+    width: 20vw;
+    cursor: pointer;
+}
+
+.nav-link {
+    color: var(--dark-text);
+    text-decoration: none;
+    font-size: 2.5vh;
+    margin: 1vw;
+
+    &:hover {
+        color: var(--grey-text);
+    }
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+}

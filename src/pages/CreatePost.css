@@ -1,0 +1,48 @@
+@import url("../colors.css");
+
+.post-form-container {
+    padding: 2vw;
+    margin-top: 8vh;
+    background-color: var(--grey-bg);
+    color: var(--light-text);
+    width: 60%;
+    border-radius: 15px;
+}
+
+.post-form-input {
+    width: 80%;
+    border: 0.5px solid grey;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    background-color: var(--lav-tint);
+}
+
+.form-txt {
+    font-size: 2vh;
+}
+
+.text-area {
+    height: 20vh;
+    width: 80%;
+    resize: none;
+
+    padding: 8px;
+    
+    border-radius: 7px;
+    margin: 2vh 0;
+
+    background-color: var(--lav-tint);
+    color: var(--light-text);
+    font: inherit;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.form-btn {
+    background-color: var(--main-comp);
+    &:hover {
+        background-color: var(--main-comp-hover);
+        color: var(--dark-text);
+    }
+}

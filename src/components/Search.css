@@ -1,0 +1,21 @@
+@import url('../colors.css');
+
+.search {
+    width: 100%;
+    border: none;
+    background-color: var(--search-bg);
+    color: var(--dark-text);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 0 0 2px rgb(134 140 160 / 2%);
+    padding: 0 0 0 3.5rem;
+    background-image: url("../assets/icons8-search.svg");
+    background-size: 1.5rem;
+    background-repeat: no-repeat;
+    background-position: 16px 48%;
+}
+
+.search-bar {
+    margin-right: 2vw;
+}

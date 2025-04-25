@@ -1,0 +1,25 @@
+
+.sort-btn {
+    height: 90%;
+    font-size: 1rem;
+    padding: 0.5em 1.2em;
+    background-color: var(--main-comp);
+
+    &:hover {
+        background-color: var(--main-comp-hover);
+        color: var(--dark-text);
+    }
+}
+
+.sorting-btns-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    h2 {
+        margin: 0;
+    }
+    button {
+        margin: 0 0.5vw;
+    }
+    /* justify-content: space-between !important; */
+}

@@ -1,0 +1,8 @@
+@import url('../colors.css');
+.filters {
+    width: 50% !important;
+    background-color: var(--light-lav);
+    color: var(--light-text);
+    padding: 1rem;
+    border-radius: 10px;
+}

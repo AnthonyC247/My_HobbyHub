@@ -1,0 +1,47 @@
+@import url("../colors.css");
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3vh;
+    font-weight: bold;
+    margin: 1vw;
+
+    background-color: var(--med-light-lav);
+    color: var(--light-text);
+    transition: 0.2s ease-in-out;
+    border: none;
+
+    &:hover {
+        background-color: var(--main-lav);
+        color: var(--grey-text);
+        border: none;
+    }
+}
+
+.outlined {
+    background-color: transparent;
+    border: 2px solid var(--light-lav);
+    color: var(--light-lav);
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+        background-color: transparent;
+        border: 2px solid var(--med-light-lav);
+        color: var(--med-light-lav);
+    }
+}
+
+.none {
+    background-color: transparent;
+    border: none;
+    color: var(--dark-text);
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+        background-color: transparent;
+        border: none;
+        color: var(--grey-text);
+    }
+}
