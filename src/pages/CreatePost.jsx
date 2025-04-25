@@ -5,12 +5,19 @@ import Button from '../components/Button';
 import "./CreatePost.css";
 import { useLocation } from 'react-router-dom';
 
-const CreatePost = ({navigate, supabase}) => {
+const CreatePost = ({ navigate, supabase }) => {
     const [post, setPost] = useState({ 
         title: '', 
         content: '',
         image: '',
     });
+
+    const location = useLocation();
+    const userId = location.state?.user_id;
+
+    useEffect(() => {
+        console.log("User ID from navigation state:", userId);
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,16 +27,21 @@ const CreatePost = ({navigate, supabase}) => {
         }));
     }
 
-    const userId = useLocation().state?.user_id;
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // add the post to the database
+        if (!userId) {
+            alert("You must be signed in to create a post.");
+            console.error("Missing user ID. Cannot create post.");
+            return;
+        }
+
         await addPost();
-        navigate('/home', {state: {
-            user_id: userId,
-        }}); // navigate to the home page
+        navigate('/home', {
+            state: {
+                user_id: userId,
+            }
+        });
     };
 
     const addPost = async () => {
@@ -45,7 +57,7 @@ const CreatePost = ({navigate, supabase}) => {
             ]);
 
         if (error) {
-            console.error(error);
+            console.error("Supabase insert error:", error);
             alert("Error creating post");
         }
     }
@@ -64,7 +76,8 @@ const CreatePost = ({navigate, supabase}) => {
                         classes={"post-form-input form-txt"}
                         value={post.title}
                         handleChange={handleChange}
-                        name={"title"}/>
+                        name={"title"} />
+                    
                     <textarea
                         name="content"
                         placeholder='Content...'
@@ -72,20 +85,21 @@ const CreatePost = ({navigate, supabase}) => {
                         onChange={handleChange}
                         className='text-area form-txt'
                     ></textarea>
+
                     <div className="row">
                         <TextInput 
                             placeholder={"Image URL (Optional)"}
                             classes={"post-form-input form-txt"}
                             value={post.image}
                             handleChange={handleChange}
-                            name={"image"}/>
+                            name={"image"} />
                     </div>
+
                     <Button 
                         submit={true}
                         content={"Create Post"}
                         handleClick={handleSubmit}
-                        classes={"form-btn"}
-                        />
+                        classes={"form-btn"} />
                 </form>
             </div>
         </div>
