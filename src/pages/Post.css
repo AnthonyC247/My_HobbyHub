@@ -50,3 +50,20 @@
     max-height: 50vh;
     object-fit: cover;
 }
+
+.spinner {
+    margin: 40px auto;
+    width: 48px;
+    height: 48px;
+    border: 6px solid #ddd;
+    border-top: 6px solid #6c5ce7;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  

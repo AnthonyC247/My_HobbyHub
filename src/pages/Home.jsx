@@ -9,30 +9,30 @@ import "./Home.css";
 
 const Home = ({navigate, supabase}) => {
     const userId = useLocation().state?.user_id;
-    
+
     const [posts, setPosts] = useState({
         allPosts: [],
         displayedPosts: [],
     });
     const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(true); // 👈 added loading state
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const { data, error } = await supabase
-                .from('posts')
-                .select('*');
+            setLoading(true); // 👈 show loading spinner
+            const { data, error } = await supabase.from('posts').select('*');
             if (error) {
                 console.error(error);
-                return;
+            } else {
+                const sortedData = sortByTime(data);
+                setPosts({
+                    allPosts: sortedData,
+                    displayedPosts: sortedData,
+                });
             }
-
-            const sortedData = sortByTime(data);
-            setPosts((prevState) => ({
-                ...prevState,
-                allPosts: [...sortedData],
-                displayedPosts: [...sortedData],
-            }));
+            setLoading(false); // 👈 hide loading spinner
         };
+
         fetchPosts();
     }, []);
 
@@ -51,37 +51,22 @@ const Home = ({navigate, supabase}) => {
     };
 
     const sortByTime = (data) => {
-        let sorted = [...data];
-        sorted.sort((a, b) => {
-            return new Date(b.created_at) - new Date(a.created_at);
-        });
-        return sorted;
+        return [...data].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     };
 
     const sortByUpvotes = (data) => {
-        let sorted = [...data];
-        sorted.sort((a, b) => {
-            return b.upvotes - a.upvotes;
-        });
-        return sorted;
+        return [...data].sort((a, b) => b.upvotes - a.upvotes);
     };
 
     useEffect(() => {
-        const filteredPosts = posts.allPosts.filter((post) => {
-            return post.title.toLowerCase().includes(search);
-        });
+        const filteredPosts = posts.allPosts.filter((post) =>
+            post.title.toLowerCase().includes(search)
+        );
 
-        if (filteredPosts.length === 0 || search === "") {
-            setPosts((prevState) => ({
-                ...prevState,
-                displayedPosts: [...posts.allPosts],
-            }));
-        } else {
-            setPosts((prevState) => ({
-                ...prevState,
-                displayedPosts: [...filteredPosts],
-            }));
-        }
+        setPosts((prevState) => ({
+            ...prevState,
+            displayedPosts: search === "" ? [...posts.allPosts] : [...filteredPosts],
+        }));
     }, [search]);
 
     return (
@@ -89,31 +74,37 @@ const Home = ({navigate, supabase}) => {
             <Navbar_Login 
                 navigate={navigate} 
                 supabase={supabase}
-                userId={userId} 
+                userId={userId}
             />
+
             <div className="home-pg">
                 <Filters 
                     handlePopularity={() => handleSort('upvotes')}
                     handleTime={() => handleSort('time')}
                     handleSearch={(e) => setSearch(e.target.value.trim().toLowerCase())}
-                    search={search} 
+                    search={search}
                 />
+
                 <div className="posts-container">
-                    {posts.displayedPosts.map((post) => (
-                        <PostTile 
-                            key={post.id}
-                            postId={post.id}
-                            title={post.title}
-                            content={post.content}           
-                            image={post.image}
-                            user_id={userId}
-                            upvotes={post.upvotes}
-                            downvotes={post.downvotes}
-                            timeCreated={post.created_at}
-                            supabase={supabase}
-                            navigate={navigate}
-                        />
-                    ))}
+                    {loading ? (
+                        <div className="spinner"></div> // 👈 spinner or "Loading..." text
+                    ) : (
+                        posts.displayedPosts.map((post) => (
+                            <PostTile 
+                                key={post.id}
+                                postId={post.id}
+                                title={post.title}
+                                content={post.content}
+                                image={post.image}
+                                user_id={userId}
+                                upvotes={post.upvotes}
+                                downvotes={post.downvotes}
+                                timeCreated={post.created_at}
+                                supabase={supabase}
+                                navigate={navigate}
+                            />
+                        ))
+                    )}
                 </div>
             </div>
         </div>
@@ -121,3 +112,4 @@ const Home = ({navigate, supabase}) => {
 };
 
 export default Home;
+
