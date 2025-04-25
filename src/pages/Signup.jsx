@@ -1,112 +1,113 @@
-import Navbar from "../components/Navbar";
-import Button from "../components/Button";
-import TextInput from "../components/TextInput";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './Signup.css';
 
-import { useState } from "react";
-import "./Signup.css";
+const Signup = ({ supabase }) => {
+  const navigate = useNavigate();
 
-const Signup = ({ navigate, supabase }) => {
-  const [userInfo, setUserInfo] = useState({
-    email: "",
-    password: "",
-    passVerify: "",
-    username: "",
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    username: '',
   });
 
-  const handleInfoChange = (e) => {
-    const { name, value } = e.target;
-    setUserInfo((prevInfo) => ({
-      ...prevInfo,
-      [name]: value,
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value,
     }));
   };
 
-  const handleSignUp = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (userInfo.password !== userInfo.passVerify) {
-      alert("Passwords do not match");
-      return;
-    }
+    setLoading(true);
 
-    const { data, error } = await supabase.auth.signUp({
-      email: userInfo.email,
-      password: userInfo.password,
+    // Sign up user with Supabase Auth
+    const { data, error: signupError } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
     });
 
-    if (error) {
-      console.error("Signup error:", error);
-      alert("Error signing up");
+    if (signupError) {
+      console.error('Signup error:', signupError.message);
+      alert(signupError.message);
+      setLoading(false);
       return;
     }
 
-    const user_id = data?.user?.id;
+    // Get the current user (must be confirmed)
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
 
-    // insert user profile into your custom users table
-    const { error: insertError } = await supabase.from("users").insert([
-      {
-        id: user_id,
-        email: userInfo.email,
-        username: userInfo.username,
-      },
-    ]);
-
-    if (insertError) {
-      console.error("User profile insert error:", insertError);
-      alert("User signed up, but we couldn't save their profile info.");
+    if (userError || !user) {
+      console.error('Get user error:', userError?.message || 'No user');
+      alert('Failed to retrieve user after signup');
+      setLoading(false);
       return;
     }
 
-    navigate("/home", {
-      state: { user_id: user_id },
+    // Insert user into custom users table
+    const { error: dbError } = await supabase.from('users').insert({
+      id: user.id,
+      email: user.email,
+      username: form.username,
     });
+
+    if (dbError) {
+      console.error('Insert into users table error:', dbError.message);
+      alert('Failed to complete account setup.');
+      setLoading(false);
+      return;
+    }
+
+    // Redirect to home
+    navigate('/home', {
+      state: { user_id: user.id },
+    });
+
+    setLoading(false);
   };
 
   return (
-    <div>
-      <Navbar navigate={navigate} supabase={supabase} />
-      <div className="background-pg">
-        <div className="form-container">
-          <h2 className="form-title">Sign Up</h2>
-          <form>
-            <TextInput
-              placeholder={"Username"}
-              name={"username"}
-              value={userInfo.username}
-              handleChange={handleInfoChange}
-            />
-            <TextInput
-              placeholder={"Email"}
-              name={"email"}
-              value={userInfo.email}
-              type={"email"}
-              handleChange={handleInfoChange}
-            />
-            <TextInput
-              placeholder={"Password"}
-              name={"password"}
-              type={"password"}
-              value={userInfo.password}
-              handleChange={handleInfoChange}
-            />
-            <TextInput
-              placeholder={"Verify Password"}
-              name={"passVerify"}
-              type={"password"}
-              value={userInfo.passVerify}
-              handleChange={handleInfoChange}
-            />
-            <br />
-            <Button
-              content={"Sign Up"}
-              submit={true}
-              handleClick={handleSignUp}
-            />
-          </form>
-        </div>
-      </div>
+    <div className="signup-page">
+      <form className="signup-form" onSubmit={handleSubmit}>
+        <h2>Sign Up</h2>
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={form.username}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? 'Signing Up...' : 'Create Account'}
+        </button>
+      </form>
     </div>
   );
 };
 
 export default Signup;
+
 
