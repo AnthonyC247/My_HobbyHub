@@ -1,6 +1,6 @@
 # Web Development Final Project - D&D Hobby Hub
 
-Submitted by: Harshita Bhardwaj
+Submitted by: Anthony Carmona
 
 This web app: Is a space for D&D fanatics to come together and share their passion
 
@@ -10,10 +10,7 @@ Time spent: 20 hours spent in total
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGlkdXZwbDdydWUzN3NzanZyZHhmODJ5MWJtMmc1MGF4bTd2a29zZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cyVRE9aSEJMYwXXogC/giphy.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-<!-- Replace this with whatever GIF tool you used! -->
-GIF created with [ScreenToGif](https://www.screentogif.com/)
 
 ## Required Features
 
@@ -53,7 +50,7 @@ One issue I ran into was when I set up user authentication with supabase, I was 
 
 ## License
 
-    Copyright [2024] [Harshita Bhardwaj]
+    Copyright [2025] [Anthony Carmona ]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
